@@ -18,7 +18,7 @@ To run the app
 >
 > ```pip install . ```
 > 
-> - run the app
+> - run the app with streamlit command in root folder
 > 
 > ```streamlit run Accueil.py ```
 > 
