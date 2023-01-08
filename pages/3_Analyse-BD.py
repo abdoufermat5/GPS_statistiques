@@ -29,6 +29,9 @@ mydb = myclient["DonneeGPS"]
 mycol = mydb["DATAGPS"]
 
 
+# ---------------------------#
+# PARTIE STATS GENERALES #
+# ---------------------------#
 def chart_dist_mois(id_user):
     x = mycol.find({'USER_ID': id_user})
     df_plot = pd.DataFrame.from_dict(x)
@@ -154,7 +157,7 @@ def stats_transport(dataframe):
     return tab_stats
 
 
-def chart_nb_transport(id_user):
+def chart_transport(id_user, label):
     x = mycol.find({'USER_ID': id_user})
     df_plot = pd.DataFrame.from_dict(x)
 
@@ -193,13 +196,22 @@ def chart_nb_transport(id_user):
     # load data into a DataFrame object:
     df_transport = pd.DataFrame(data)
 
-    # Pie Chart Plot
-    fig = px.pie(df_transport, values='count', names='TYPE-TRANSPORT', color="TYPE-TRANSPORT",
-                 title='REPARTITION NB TRAJET PAR TYPE-TRANSPORT')
-    st.plotly_chart(fig, theme=None, use_container_width=True)
+    # LABEL = TRAJET
+    if label == "trajet":
+        # Pie Chart Plot
+        fig = px.pie(df_transport, values='count', names='TYPE-TRANSPORT', color="TYPE-TRANSPORT",
+                     title='REPARTITION NB TRAJET PAR TYPE-TRANSPORT')
+        st.plotly_chart(fig, theme=None, use_container_width=True)
+
+    # LABEL = DISTANCE
+    else:
+        # Pie Chart Plot
+        fig = px.pie(df_transport, values='DISTANCE', names='TYPE-TRANSPORT', color="TYPE-TRANSPORT",
+                     title='REPARTITION DISTANCE PARCOURUS PAR TYPE-TRANSPORT')
+        st.plotly_chart(fig, theme=None, use_container_width=True)
 
 
-def chart_dist_transport(id_user):
+def bar_transport(id_user, label):
     x = mycol.find({'USER_ID': id_user})
     df_plot = pd.DataFrame.from_dict(x)
 
@@ -238,15 +250,50 @@ def chart_dist_transport(id_user):
     # load data into a DataFrame object:
     df_transport = pd.DataFrame(data)
 
-    # Pie Chart Plot
-    fig = px.pie(df_transport, values='DISTANCE', names='TYPE-TRANSPORT', color="TYPE-TRANSPORT",
-                 title='REPARTITION DISTANCE PARCOURUS PAR TYPE-TRANSPORT')
-    st.plotly_chart(fig, theme=None, use_container_width=True)
+    # LABEL = TRAJET
+    if label == "trajet":
+        # Moyenne pour plot DISTANCE PARCOURUS
+        list_distance_transport = df_transport["DISTANCE"].to_list()
+        avg_distance_transport = Average(list_distance_transport)
+
+        # Bar Plot
+        fig = px.bar(df_transport, x="TYPE-TRANSPORT", y="DISTANCE", color="TYPE-TRANSPORT",
+                     title='DISTANCE TOTALE PARCOURUS PAR TYPE-TRANSPORT (en km)')
+        fig.add_shape(  # add a horizontal "target" line
+            type="line", line_color="salmon", line_width=3, opacity=1, line_dash="dot",
+            x0=0, x1=1, xref="paper", y0=avg_distance_transport, y1=avg_distance_transport, yref="y", name="moyenne"
+        )
+        fig.add_annotation(  # add a text callout with arrow
+            text="MOYENNE", x="velo", y=avg_distance_transport, arrowhead=5, showarrow=True
+        )
+        st.plotly_chart(fig, theme=None, use_container_width=True)
+
+    else:
+        # Moyenne pour plot NB TRAJET
+        list_count_transport = df_transport["count"].to_list()
+        avg_count_transport = Average(list_count_transport)
+
+        # Bar Plot
+        fig = px.bar(df_transport, x="TYPE-TRANSPORT", y="count", color="TYPE-TRANSPORT",
+                     title='NB TRAJET PAR TYPE-TRANSPORT')
+        fig.add_shape(  # add a horizontal "target" line
+            type="line", line_color="salmon", line_width=3, opacity=1, line_dash="dot",
+            x0=0, x1=1, xref="paper", y0=avg_count_transport, y1=avg_count_transport, yref="y", name="moyenne"
+        )
+        fig.add_annotation(  # add a text callout with arrow
+            text="MOYENNE", x="voiture/bus/taxi", y=avg_count_transport, arrowhead=5, showarrow=True
+        )
+        st.plotly_chart(fig, theme=None, use_container_width=True)
 
 
-def bar_nb_transport(id_user):
+def bar_mois_transport(id_user):
     x = mycol.find({'USER_ID': id_user})
     df_plot = pd.DataFrame.from_dict(x)
+
+    # Add column MONTH
+    dates = df_plot.DATE.tolist()
+    months = [date[:7] for date in dates]
+    df_plot["MONTH"] = months
 
     # Add column TYPE_TRANSPORT_SS_TRAJET
     tab_size = []
@@ -270,89 +317,22 @@ def bar_nb_transport(id_user):
 
     df_plot["TYPE_TRANSPORT_SS_TRAJET"] = tab_transport
 
-    # Génère les statistiques nécessaires
-    df_buffer = stats_transport(df_plot)
+    # Add column TYPE_TRANSPORT_FINAL
+    transport_final = []
 
-    # Dataframe de statistique par TYPE-TRANSPORT
-    data = {
-        "count": df_buffer[:3],
-        "DISTANCE": df_buffer[3:],
-        "TYPE-TRANSPORT": ['velo', 'voiture/bus/taxi', 'marche']
-    }
+    for i in range(len(df_plot.TRAJET_ID)):
+        test = df_plot.TYPE_TRANSPORT_SS_TRAJET[i].split(',')
+        if len(test) > 1 and test[0] != test[1]:
+            transport_final.append(test[0] + "," + test[1])
+        else:
+            transport_final.append(test[0])
 
-    # load data into a DataFrame object:
-    df_transport = pd.DataFrame(data)
+    df_plot['TYPE_TRANSPORT_FINAL'] = transport_final
 
-    # Moyenne pour plot NB TRAJET
-    list_count_transport = df_transport["count"].to_list()
-    avg_count_transport = Average(list_count_transport)
-
-    # Bar Plot
-    fig = px.bar(df_transport, x="TYPE-TRANSPORT", y="count", color="TYPE-TRANSPORT",
-                 title='NB TRAJET PAR TYPE-TRANSPORT')
-    fig.add_shape(  # add a horizontal "target" line
-        type="line", line_color="salmon", line_width=3, opacity=1, line_dash="dot",
-        x0=0, x1=1, xref="paper", y0=avg_count_transport, y1=avg_count_transport, yref="y", name="moyenne"
-    )
-    fig.add_annotation(  # add a text callout with arrow
-        text="MOYENNE", x="voiture/bus/taxi", y=avg_count_transport, arrowhead=5, showarrow=True
-    )
-    st.plotly_chart(fig, theme=None, use_container_width=True)
-
-
-def bar_dist_transport(id_user):
-    x = mycol.find({'USER_ID': id_user})
-    df_plot = pd.DataFrame.from_dict(x)
-
-    # Add column TYPE_TRANSPORT_SS_TRAJET
-    tab_size = []
-    tab_transport = []
-
-    for i in range(len(df_plot.SOUS_TRAJET)):
-        buff = ""
-        buff2 = ""
-        tab_size.append(len(df_plot.SOUS_TRAJET[i]))
-        for j in range(len(df_plot.SOUS_TRAJET[i])):
-            if len(df_plot.SOUS_TRAJET[i]) > 1:
-                # Pour éviter d'avoir la virgule au début
-                if j == 0:
-                    buff2 = df_plot.SOUS_TRAJET[i][j].get("TYPE-TRANSPORT")
-                else:
-                    buff2 = buff2 + ',' + df_plot.SOUS_TRAJET[i][j].get("TYPE-TRANSPORT")
-                    buff = buff2
-            else:
-                buff = df_plot.SOUS_TRAJET[i][j].get("TYPE-TRANSPORT")
-        tab_transport.append(buff)
-
-    df_plot["TYPE_TRANSPORT_SS_TRAJET"] = tab_transport
-
-    # Génère les statistiques nécessaires
-    df_buffer = stats_transport(df_plot)
-
-    # Dataframe de statistique par TYPE-TRANSPORT
-    data = {
-        "count": df_buffer[:3],
-        "DISTANCE": df_buffer[3:],
-        "TYPE-TRANSPORT": ['velo', 'voiture/bus/taxi', 'marche']
-    }
-
-    # load data into a DataFrame object:
-    df_transport = pd.DataFrame(data)
-
-    # Moyenne pour plot DISTANCE PARCOURUS
-    list_distance_transport = df_transport["DISTANCE"].to_list()
-    avg_distance_transport = Average(list_distance_transport)
-
-    # Bar Plot
-    fig = px.bar(df_transport, x="TYPE-TRANSPORT", y="DISTANCE", color="TYPE-TRANSPORT",
-                 title='DISTANCE TOTALE PARCOURUS PAR TYPE-TRANSPORT (en km)')
-    fig.add_shape(  # add a horizontal "target" line
-        type="line", line_color="salmon", line_width=3, opacity=1, line_dash="dot",
-        x0=0, x1=1, xref="paper", y0=avg_distance_transport, y1=avg_distance_transport, yref="y", name="moyenne"
-    )
-    fig.add_annotation(  # add a text callout with arrow
-        text="MOYENNE", x="velo", y=avg_distance_transport, arrowhead=5, showarrow=True
-    )
+    # La fonction pour le plot par mois
+    fig = px.bar(df_plot, x="MONTH", color='TYPE_TRANSPORT_FINAL', barmode='group', height=1000,
+                 title='NB TRAJET EFFECTUE PAR MOIS')
+    fig.update_traces(dict(marker_line_width=0))
     st.plotly_chart(fig, theme=None, use_container_width=True)
 
 
@@ -397,17 +377,188 @@ def profil_user(id_user):
     st.pyplot(fig, clear_figure=False)
 
 
+def chart_nb_ecologie(id_user, label):
+    x = mycol.find({'USER_ID': id_user})
+    df_plot = pd.DataFrame.from_dict(x)
+
+    # Add column TYPE_TRANSPORT_SS_TRAJET
+    tab_size = []
+    tab_transport = []
+
+    for i in range(len(df_plot.SOUS_TRAJET)):
+        buff = ""
+        buff2 = ""
+        tab_size.append(len(df_plot.SOUS_TRAJET[i]))
+        for j in range(len(df_plot.SOUS_TRAJET[i])):
+            if len(df_plot.SOUS_TRAJET[i]) > 1:
+                # Pour éviter d'avoir la virgule au début
+                if j == 0:
+                    buff2 = df_plot.SOUS_TRAJET[i][j].get("TYPE-TRANSPORT")
+                else:
+                    buff2 = buff2 + ',' + df_plot.SOUS_TRAJET[i][j].get("TYPE-TRANSPORT")
+                    buff = buff2
+            else:
+                buff = df_plot.SOUS_TRAJET[i][j].get("TYPE-TRANSPORT")
+        tab_transport.append(buff)
+
+    df_plot["TYPE_TRANSPORT_SS_TRAJET"] = tab_transport
+
+    # drop les lignes qui ont plus de 5km de distance
+    df_plot_ecologie = df_plot.drop(df_plot[df_plot.DISTANCE > 5.0].index)
+
+    # Fixe les Index drop grâce à un compteur
+    num_index = []
+    for i in range(len(df_plot_ecologie)):
+        num_index.append(i)
+    df_plot_ecologie["INDEX_NUMBER"] = num_index
+    df_plot_ecologie = df_plot_ecologie.set_index('INDEX_NUMBER')
+
+    # Génère les statistiques nécessaires
+    user_ecologie = stats_transport(df_plot_ecologie)
+
+    # Dataframe de statistique écologie par TYPE-TRANSPORT
+    data_ecologie = {
+        "count": user_ecologie[:3],
+        "DISTANCE": user_ecologie[3:],
+        "TYPE-TRANSPORT": ['velo', 'voiture/bus/taxi', 'marche']
+    }
+
+    # load data into a DataFrame object:
+    df_transport_ecologie = pd.DataFrame(data_ecologie)
+
+    # LABEL = TRAJET
+    if label == "trajet":
+        # Pie Chart Plot
+        fig = px.pie(df_transport_ecologie, values='count', names='TYPE-TRANSPORT', color='TYPE-TRANSPORT',
+                     title='REPARTITION NB TRAJET PARCOURUS PAR TYPE-TRANSPORT MODELE ECOLOGIE')
+        st.plotly_chart(fig, theme=None, use_container_width=True)
+
+    # LABEL = DISTANCE
+    else:
+        # Pie Chart Plot
+        fig = px.pie(df_transport_ecologie, values='DISTANCE', names='TYPE-TRANSPORT', color='TYPE-TRANSPORT',
+                     title='REPARTITION DISTANCE PARCOURUS PAR TYPE-TRANSPORT MODELE ECOLOGIE')
+        st.plotly_chart(fig, theme=None, use_container_width=True)
+
+
+def bar_ecologie(id_user, label):
+    x = mycol.find({'USER_ID': id_user})
+    df_plot = pd.DataFrame.from_dict(x)
+
+    # Add column TYPE_TRANSPORT_SS_TRAJET
+    tab_size = []
+    tab_transport = []
+
+    for i in range(len(df_plot.SOUS_TRAJET)):
+        buff = ""
+        buff2 = ""
+        tab_size.append(len(df_plot.SOUS_TRAJET[i]))
+        for j in range(len(df_plot.SOUS_TRAJET[i])):
+            if len(df_plot.SOUS_TRAJET[i]) > 1:
+                # Pour éviter d'avoir la virgule au début
+                if j == 0:
+                    buff2 = df_plot.SOUS_TRAJET[i][j].get("TYPE-TRANSPORT")
+                else:
+                    buff2 = buff2 + ',' + df_plot.SOUS_TRAJET[i][j].get("TYPE-TRANSPORT")
+                    buff = buff2
+            else:
+                buff = df_plot.SOUS_TRAJET[i][j].get("TYPE-TRANSPORT")
+        tab_transport.append(buff)
+
+    df_plot["TYPE_TRANSPORT_SS_TRAJET"] = tab_transport
+
+    # drop les lignes qui ont plus de 5km de distance
+    df_plot_ecologie = df_plot.drop(df_plot[df_plot.DISTANCE > 5.0].index)
+
+    # Fixe les Index drop grâce à un compteur
+    num_index = []
+    for i in range(len(df_plot_ecologie)):
+        num_index.append(i)
+    df_plot_ecologie["INDEX_NUMBER"] = num_index
+    df_plot_ecologie = df_plot_ecologie.set_index('INDEX_NUMBER')
+
+    # Génère les statistiques nécessaires
+    user_ecologie = stats_transport(df_plot_ecologie)
+
+    # Dataframe de statistique écologie par TYPE-TRANSPORT
+    data_ecologie = {
+        "count": user_ecologie[:3],
+        "DISTANCE": user_ecologie[3:],
+        "TYPE-TRANSPORT": ['velo', 'voiture/bus/taxi', 'marche']
+    }
+
+    # load data into a DataFrame object:
+    df_transport_ecologie = pd.DataFrame(data_ecologie)
+
+    # LABEL = TRAJET
+    if label == "trajet":
+        list_count_ecologie = user_ecologie[:3]
+        average_count_ecologie = Average(list_count_ecologie)
+
+        # Bar Plot
+        fig = px.bar(df_transport_ecologie, x="TYPE-TRANSPORT", y="count", color="TYPE-TRANSPORT",
+                     title='NB TRAJET PAR TYPE-TRANSPORT MODELE ECOLOGIE')
+
+        # add a horizontal "target" line
+        fig.add_shape(
+            type="line", line_color="salmon", line_width=3, opacity=1, line_dash="dot",
+            x0=0, x1=1, xref="paper", y0=average_count_ecologie, y1=average_count_ecologie, yref="y")
+
+        fig.add_annotation(  # add a text callout with arrow
+            text="MOYENNE", x="voiture/bus/taxi", y=average_count_ecologie, arrowhead=5, showarrow=True)
+
+        st.plotly_chart(fig, theme=None, use_container_width=True)
+
+    # LABEL = DISTANCE
+    else:
+        list_distance_ecologie = user_ecologie[3:]
+        average_distance_ecologie = Average(list_distance_ecologie)
+
+        # Bar Plot
+        fig = px.bar(df_transport_ecologie, x="TYPE-TRANSPORT", y="DISTANCE", color="TYPE-TRANSPORT",
+                     title='DISTANCE TOTALE PARCOURUS PAR TYPE-TRANSPORT MODELE ECOLOGIE')
+
+        # add a horizontal "target" line
+        fig.add_shape(
+            type="line", line_color="salmon", line_width=3, opacity=1, line_dash="dot",
+            x0=0, x1=1, xref="paper", y0=average_distance_ecologie, y1=average_distance_ecologie, yref="y",
+            name="moyenne")
+
+        fig.add_annotation(  # add a text callout with arrow
+            text="MOYENNE", x="voiture/bus/taxi", y=average_distance_ecologie, arrowhead=5, showarrow=True)
+
+        st.plotly_chart(fig, theme=None, use_container_width=True)
+
+
 def main():
     users = myclient["DonneeGPS"]["DATAGPS"].distinct("USER_ID")
-
     attribute = st.selectbox("Choisir l'user", users)
+    trajet = "trajet"
+    distance = "distance"
+
+    # ---------------------------#
+    # PARTIE STATS GENERALES #
+    # ---------------------------#
     chart_dist_mois(attribute)
     bar_dist_mois(attribute)
-    chart_nb_transport(attribute)
-    chart_dist_transport(attribute)
-    bar_nb_transport(attribute)
-    bar_dist_transport(attribute)
+
+    # ---------------------------#
+    # PARTIE TYPE-TRANSPORT #
+    # ---------------------------#
+    chart_transport(attribute, trajet)
+    chart_transport(attribute, distance)
+    bar_transport(attribute, trajet)
+    bar_transport(attribute, distance)
+    bar_mois_transport(attribute)
+
+    # ---------------------------#
+    # PROFIL USER #
+    # ---------------------------#
     profil_user(attribute)
+    chart_nb_ecologie(attribute, trajet)
+    chart_nb_ecologie(attribute, distance)
+    bar_ecologie(attribute, trajet)
+    bar_ecologie(attribute, distance)
 
 if __name__ == "__main__":
     main()
