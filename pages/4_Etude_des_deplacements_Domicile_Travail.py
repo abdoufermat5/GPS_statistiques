@@ -7,15 +7,15 @@ import streamlit.components.v1 as components
 from gps_uvsq_utils.st_helpers import load_assets, load_sidebar_footer, load_html
 
 st.set_page_config(
-    page_title="Explorer les notebooks",
+    page_title="Etude des déplacements Domicile/Travail",
     page_icon="🎢",
     layout="wide",
     initial_sidebar_state="expanded",
 )
 # Main objective page
 load_assets()
-load_sidebar_footer("Exploration de notebooks", "area_chart")
-st.title("Exploration des notebooks")
+load_sidebar_footer("Etude des déplacements Domicile/Travail", "area_chart")
+st.title("Etude des déplacements Domicile/Travail")
 
 import streamlit as st
 
