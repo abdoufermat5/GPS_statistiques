@@ -7,6 +7,36 @@ import streamlit.components.v1 as components
 from gps_uvsq_utils.gps_helpers import calc_distance_parcouru_entre_2_coordonnees
 from gps_uvsq_utils.st_helpers import load_assets, load_sidebar_footer, display_info, display_k_rows, display_bar_chart
 
+import pymongo 
+import numpy as np
+import math
+
+
+def get_distance(coord1, coord2):
+    """
+    Calculates the distance between two coordinates on the surface of a sphere using the Haversine formula.
+    
+    Args:
+    coord1 (tuple): A tuple representing the (latitude, longitude) coordinates of the first point.
+    coord2 (tuple): A tuple representing the (latitude, longitude) coordinates of the second point.
+    
+    Returns:
+    float: The distance between the two points in meters.
+    """
+    # Convert the coordinates from degrees to radians
+    lat1, lon1 = math.radians(coord1[0]), math.radians(coord1[1])
+    lat2, lon2 = math.radians(coord2[0]), math.radians(coord2[1])
+
+    # Haversine formula
+    dlat = lat2 - lat1
+    dlon = lon2 - lon1
+    a = math.sin(dlat / 2)**2 + math.cos(lat1) * math.cos(lat2) * math.sin(dlon / 2)**2
+    c = 2 * math.asin(math.sqrt(a))
+    r = 6371  # Radius of the Earth in kilometers
+    distance = c * r * 1000  # Convert to meters
+
+    return distance
+
 import plotly.express as px
 
 def creation_dataframe_fichier(file):
