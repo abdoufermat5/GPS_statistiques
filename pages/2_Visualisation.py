@@ -29,7 +29,7 @@ def map_trajet(id_user,num_trajet):
         id_user = '001'
 
     x = mycol.find({'USER_ID': id_user})
-    x_bis = mycol2.find({'USER_ID': id_user})
+    x_bis = mycol2.find({'USER_ID': id_user,'TRAJET_ID':num_trajet})
     df_plot = pd.DataFrame.from_dict(x)
     df_plot_bis = pd.DataFrame.from_dict(x_bis)
 
@@ -38,10 +38,15 @@ def map_trajet(id_user,num_trajet):
     tab_locations_ss_trajet = []
     tab_transport = []
 
-    for i in range(len(df_plot_bis.SOUS_TRAJET[num_trajet])):
-        tab_locations_ss_trajet.append(df_plot_bis.SOUS_TRAJET[num_trajet][i].get("List_Point"))
-        tab_transport.append(df_plot.SOUS_TRAJET[num_trajet][i].get('TYPE-TRANSPORT'))
+    for i in range(len(df_plot_bis.SOUS_TRAJET)):
+        print(type(df_plot_bis.SOUS_TRAJET[i]))
+        tab_locations_ss_trajet.append(df_plot_bis.SOUS_TRAJET[i][0].get("List_Point"))
 
+        # print("##################" + df_plot.SOUS_TRAJET[num_trajet][i].get('TYPE-TRANSPORT'))
+        tab_transport.append(df_plot.SOUS_TRAJET[i][0].get('TYPE-TRANSPORT'))
+
+    print("#############################\n")
+    print((df_plot.SOUS_TRAJET[i][0].get('List_Point')))
     # Point de départ
     point_depart = tab_locations_ss_trajet[0][0]
 
@@ -109,12 +114,12 @@ def main():
     st.markdown("* Un tracé :red[Rouge] indique un trajet effectué à vélo.")
     st.markdown("* Un tracé Noir indique un trajet effectué en voiture, en bus ou alors en taxi.")
 
-    users = myclient["DonneeGPS"]["DATAGPS"].distinct("USER_ID")
+    users = myclient["DonneeGPS"]["DATATEST"].distinct("USER_ID")
 
 #    if st.checkbox("Choisisser votre user"):
     attribute = st.selectbox("Choisir l'user", users)
 
-    num_trajet = myclient["DonneeGPS"]["DATAGPS"].distinct("TRAJET_ID")
+    num_trajet = myclient["DonneeGPS"]["DATATEST"].distinct("TRAJET_ID")
     attribute_trajet = st.selectbox("Choisir le trajet", num_trajet)
     map_trajet(attribute,attribute_trajet)
 
