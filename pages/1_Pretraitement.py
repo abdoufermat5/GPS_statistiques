@@ -49,9 +49,6 @@ def main():
         st.markdown(f"""<span class="display-6">Distance:</span> <span class="display-5" style="border: solid 2px red; border-radius:10px; padding:5px; background-color: grey">{distance:.2f} km</span>""", unsafe_allow_html=True)
 
 
-
-
-
         # Display a bar chart of the distribution of an attribute
         if st.checkbox("Afficher la distribution d'un attribut"):
             attribute = st.selectbox("Choisir l'attribut", df.columns)
