@@ -50,5 +50,3 @@ setup(
     },
     url="https://gitlab.com/abdoufermat5/gps_utils"
 )
-
-{enumerate}

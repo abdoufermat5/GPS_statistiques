@@ -19,8 +19,74 @@ load_assets()
 
 # load html file
 descriptions = load_html("html/descriptions.html")
-footer = load_html("html/footer.html")
-members = load_html("html/members.html")
+
+
+def members():
+    st.markdown("<br/>"*3, unsafe_allow_html=True)
+    st.markdown("---")
+    st.markdown("<br/>"*3, unsafe_allow_html=True)
+    st.markdown("""
+    <h1 class="text-center" style="background-color:#cad2e0">Membres de l'équipe</h1>
+    """, unsafe_allow_html=True)
+    st.markdown("<br/>"*3, unsafe_allow_html=True)
+    col1, col2, col3, col4 = st.columns(4)
+    with col1:
+        st.markdown("""
+        <div class="col-11">
+                <div class="card bg-transparent border-0" style="background-color:e5e5e5">
+                    <img src="https://cdn-icons-png.flaticon.com/512/147/147144.png" alt="Avatar de A" class="card-img-top rounded-circle">
+                    <div class="card-body">
+                        <h3 class="card-title">Johann Ramanandraitsiory</h3>
+                    </div>
+                    <div class="card-footer text-center">
+                        <h5 class="card-text"><b>Data Analyst</b></h5>
+                    </div>
+                </div>
+            </div>
+        """, unsafe_allow_html=True)
+    with col2:
+        st.markdown("""
+        <div class="col-11">
+                <div class="card bg-transparent border-0" style="background-color:e5e5e5">
+                    <img src="https://cdn-icons-png.flaticon.com/512/147/147144.png" alt="Avatar de A" class="card-img-top rounded-circle">
+                    <div class="card-body">
+                        <h3 class="card-title">Samuel Kalfon</h3>
+                    </div>
+                    <div class="card-footer text-center">
+                        <h5 class="card-text"><b>Data Analyst</b></h5>
+                    </div>
+                </div>
+            </div>
+        """, unsafe_allow_html=True)
+    with col3:
+        st.markdown("""
+        <div class="col-11">
+                <div class="card bg-transparent border-0" style="background-color:e5e5e5">
+                    <img src="https://cdn-icons-png.flaticon.com/512/147/147144.png" alt="Avatar de A" class="card-img-top rounded-circle">
+                    <div class="card-body">
+                    <h3 class="card-title">Abdou Yaya Sadiakhou</h3>
+                    </div>
+                    <div class="card-footer text-center">
+                        <h5 class="card-text"><b>Data Engineer</b></h5>
+                    </div>
+                </div>
+            </div>
+        """, unsafe_allow_html=True)
+    with col4:
+        st.markdown("""
+        <div class="col-11">
+                <div class="card bg-transparent border-0" style="background-color:e5e5e5">
+                    <img src="https://cdn-icons-png.flaticon.com/512/147/147144.png" alt="Avatar de A" class="card-img-top rounded-circle">
+                    <div class="card-body">
+                        <h3 class="card-title">Gwennael Cannenpasse</h3>
+                    </div>
+                    <div class="card-footer text-center">
+                        <h5 class="card-text"><b>Data Engineer</b></h5>
+                    </div>
+                </div>
+            </div>
+        """, unsafe_allow_html=True)
+
 
 # components.html(file, height=1000)
 st.markdown("""
@@ -30,6 +96,5 @@ privacy-by-design pour le Cloud personnel</h5>
 </header>
 """, unsafe_allow_html=True)
 st.markdown(descriptions, unsafe_allow_html=True)
-st.markdown(members, unsafe_allow_html=True)
-st.markdown(footer, unsafe_allow_html=True)
+members()
 load_sidebar_footer("Page d'accueil", "home")

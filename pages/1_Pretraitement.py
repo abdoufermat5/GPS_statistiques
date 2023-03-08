@@ -1,12 +1,12 @@
 import streamlit as st
-from gps_uvsq_utils.gps_helpers import creation_dataframe_fichier, calc_distance_parcouru_entre_2_coordonnees
-from gps_uvsq_utils.st_helpers import load_assets, load_sidebar_footer, display_info, display_k_rows, display_bar_chart
 from geopy.geocoders import Nominatim
+
+from gps_uvsq_utils.st_helpers import load_assets, load_sidebar_footer
+
 geolocator = Nominatim(user_agent="geoapiExercises")
 import pandas as pd
 import geopy.distance
 from datetime import datetime, timedelta
-from haversine import haversine, Unit
 
 st.set_page_config(
     page_title="Pré-traitement des données",
@@ -17,7 +17,7 @@ st.set_page_config(
 # Main objective page
 load_assets()
 load_sidebar_footer("Pré-traitements", "settings")
-st.title("Les différents pré-traitement")
+st.markdown("""<h2 class="text-center" style="background-color:#cad2e0">Les différents pré-traitement</h2>""", unsafe_allow_html=True)
 
 global count_nbr_trajet
 count_nbr_trajet = 0

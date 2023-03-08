@@ -20,7 +20,7 @@ st.set_page_config(
 # Main objective page
 load_assets()
 load_sidebar_footer("Analyse BD", "storage")
-st.title("Analyse de la base de données MongoDB")
+st.markdown("""<h2 class="text-center" style="background-color:#cad2e0">Analyse de la base de données MongoDB</h2>""", unsafe_allow_html=True)
 
 # MongoDB
 uri = 'mongodb+srv://admin:uvsqawsgroupe17@cluster0.nkdni.mongodb.net/?retryWrites=true&w=majority'

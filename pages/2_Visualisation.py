@@ -17,7 +17,8 @@ st.set_page_config(
 # Main objective page
 load_assets()
 load_sidebar_footer("Visualisation", "query_stats")
-st.title("Visualisation d'un Trajet")
+st.markdown("""<h2 class="text-center" style="background-color:#cad2e0">Visualisation d'un Trajet</h2>""", unsafe_allow_html=True)
+
 uri = 'mongodb+srv://admin:uvsqawsgroupe17@cluster0.nkdni.mongodb.net/?retryWrites=true&w=majority'
 myclient = pymongo.MongoClient(uri)
 
