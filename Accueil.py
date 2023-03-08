@@ -36,7 +36,7 @@ def members():
                 <div class="card bg-transparent border-0" style="background-color:e5e5e5">
                     <img src="https://cdn-icons-png.flaticon.com/512/147/147144.png" alt="Avatar de A" class="card-img-top rounded-circle">
                     <div class="card-body">
-                        <h3 class="card-title text-center">Johann Ramanandraitsiory</h3>
+                        <h3 class="card-title text-center">Johann<br/> Ramanandraitsiory</h3>
                     </div>
                     <div class="card-footer text-center">
                         <h5 class="card-text"><b>Data Analyst</b></h5>
@@ -64,7 +64,7 @@ def members():
                 <div class="card bg-transparent border-0" style="background-color:e5e5e5">
                     <img src="https://cdn-icons-png.flaticon.com/512/147/147144.png" alt="Avatar de A" class="card-img-top rounded-circle">
                     <div class="card-body">
-                    <h3 class="card-title text-center">Abdou Yaya Sadiakhou</h3>
+                    <h3 class="card-title text-center">Abdou Yaya <br/> Sadiakhou</h3>
                     </div>
                     <div class="card-footer text-center">
                         <h5 class="card-text"><b>Data Engineer</b></h5>
@@ -78,7 +78,7 @@ def members():
                 <div class="card bg-transparent border-0" style="background-color:e5e5e5">
                     <img src="https://cdn-icons-png.flaticon.com/512/147/147144.png" alt="Avatar de A" class="card-img-top rounded-circle">
                     <div class="card-body">
-                        <h3 class="card-title text-center">Gwennael Cannenpasse</h3>
+                        <h3 class="card-title text-center">Gwennael<br/> Cannenpasse</h3>
                     </div>
                     <div class="card-footer text-center">
                         <h5 class="card-text"><b>Data Engineer</b></h5>
