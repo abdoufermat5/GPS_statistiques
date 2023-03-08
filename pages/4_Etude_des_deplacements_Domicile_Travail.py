@@ -22,7 +22,7 @@ st.set_page_config(
 # Main objective page
 load_assets()
 load_sidebar_footer("Etude des déplacements Domicile/Travail", "area_chart")
-st.title("Etude des déplacements Domicile/Travail")
+st.markdown("""<h2 class="text-center" style="background-color:#cad2e0">Etude des déplacements Domicile/Travail</h2>""", unsafe_allow_html=True)
 
 def funct(users):
     def get_distance(coord1, coord2):

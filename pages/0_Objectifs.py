@@ -16,7 +16,7 @@ st.markdown("""<h2 class="text-center" style="background-color:#cad2e0">Objectif
 st.markdown("---")
 # enumerer les objectifs du projet avec des puces
 st.markdown("""
-<div>
+
 <div class="card border shadow">
 <div class="card-body">
 Le premier objectif de notre travail a été d'effectuer un prétraitement du jeu de données Geolife afin 
@@ -26,6 +26,19 @@ d'avoir des trajets plus cohérents et plus facilement analysables.
 </div>
 </div>
 <br/>
+""", unsafe_allow_html=True)
+
+st.markdown("""
+```python
+REGLE_TEMPS = 10 * 60  # 10 minutes
+REGLE_VITESSE =   {
+        "upper": 2, # 2 km/h
+        "lower": -2 # -2 km/h
+    }
+```
+""")
+
+st.markdown("""
 <div class="card border shadow">
 <div class="card-body">
 Ensuite, nous avons cherché à déterminer les différents types de transport utilisés par les personnes dans les 
@@ -38,6 +51,38 @@ préférés dans les déplacements de la population étudiée.
 </div>
 </div>
 <br/>
+""", unsafe_allow_html=True)
+st.markdown("""
+```python
+M_VITESSE = {
+        "marche": {
+            "min": 0,
+            "max": 10
+        },
+        "velo": {
+            "min": 10,
+            "max": 20
+        },
+        "voiture/bus/taxi": {
+            "min": 20,
+            "max": 80
+        },
+        "train": {
+            "min": 80,
+            "max": 580
+        },
+        "airplane": {
+            "min": 580,
+            "max": 920
+        },
+        "other": {
+            "min": -1,
+            "max": -1
+        }
+    }
+""")
+
+st.markdown("""
 <div class="card border shadow">
 <div class="card-body">
 Nous avons donc créé une base de données MongoDB pour stocker les données de manière organisée et facilement 
@@ -59,7 +104,6 @@ identifier ces deux clusters.
 <div class="card-body">
 Enfin le dernier objectif de notre travail consistait à créer des profiles de personnes en fonction de leurs trajets et
 de leurs modes de transport. 
-</div>
 </div>
 </div>
 """, unsafe_allow_html=True)
