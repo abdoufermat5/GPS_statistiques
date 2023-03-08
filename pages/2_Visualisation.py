@@ -119,7 +119,8 @@ def main():
 #    if st.checkbox("Choisisser votre user"):
     attribute = st.selectbox("Choisir l'user", users)
 
-    num_trajet = myclient["DonneeGPS"]["DATATEST"].distinct("TRAJET_ID")
+    num_trajet = myclient["DonneeGPS"]["DATATEST"].find({'USER_ID': attribute}).distinct("TRAJET_ID")
+    print (myclient["DonneeGPS"]["DATATEST"].find({'USER_ID': attribute}).distinct("TRAJET_ID"))
     attribute_trajet = st.selectbox("Choisir le trajet", num_trajet)
     map_trajet(attribute,attribute_trajet)
 
