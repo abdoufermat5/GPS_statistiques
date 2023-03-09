@@ -18,12 +18,12 @@ st.markdown("---")
 st.markdown("""
 
 <div class="card border shadow">
-<div class="card-body">
-Le premier objectif de notre travail a été d'effectuer un prétraitement du jeu de données Geolife afin 
-de faciliter son analyse ultérieure. Ce prétraitement a consisté à regroupé les relevés GPS en des trajets.
-Pour cela nous avons appliquer un ensemble de règles de séparation basé sur le temps et la vitesse. Cela nous a permis 
-d'avoir des trajets plus cohérents et plus facilement analysables.
-</div>
+    <div class="card-body text-dark">
+    Le premier objectif de notre travail a été d'effectuer un prétraitement du jeu de données Geolife afin 
+    de faciliter son analyse ultérieure. Ce prétraitement a consisté à regroupé les relevés GPS en des trajets.
+    Pour cela nous avons appliquer un ensemble de règles de séparation basé sur le temps et la vitesse. Cela nous a permis 
+    d'avoir des trajets plus cohérents et plus facilement analysables.
+    </div>
 </div>
 <br/>
 """, unsafe_allow_html=True)
@@ -40,7 +40,7 @@ REGLE_VITESSE =   {
 
 st.markdown("""
 <div class="card border shadow">
-<div class="card-body">
+<div class="card-body text-dark">
 Ensuite, nous avons cherché à déterminer les différents types de transport utilisés par les personnes dans les 
 trajectoires. Pour cela, nous avons utilisé une methode heuristique qui consiste à inférer le mode de transport à 
 partir de la vitesse moyenne du trajet. Nous sommes partis du principe que les trajets effectués à pied ou à vélo ont 
@@ -84,14 +84,14 @@ M_VITESSE = {
 
 st.markdown("""
 <div class="card border shadow">
-<div class="card-body">
+<div class="card-body text-dark">
 Nous avons donc créé une base de données MongoDB pour stocker les données de manière organisée et facilement 
 accessible pour les traitements ultérieurs.
 </div>
 </div>
 <br/>
 <div class="card border shadow">
-<div class="card-body">
+<div class="card-body text-dark">
 Un autre objectif a été d'identifier les trajets domicile-travail effectués par les utilisateurs. 
 Dans cette partie également nous avons adopté une approche heuristique. Nous avons cherché à identifier les trajets
 domicile-travail en utilisant les données de localisation des utilisateurs. Un trajet domicile-travail pour un utilisateur
@@ -101,7 +101,7 @@ identifier ces deux clusters.
 </div>
 <br/>
 <div class="card border shadow">
-<div class="card-body">
+<div class="card-body text-dark">
 Enfin le dernier objectif de notre travail consistait à créer des profiles de personnes en fonction de leurs trajets et
 de leurs modes de transport. 
 </div>
