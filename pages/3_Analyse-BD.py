@@ -62,7 +62,7 @@ def chart_dist_mois(id_user):
     df_plot["MONTH"] = months
 
     # Pie Chart Plot
-    fig = px.pie(df_plot, values='DISTANCE', names='MONTH', title='REPARTITION DISTANCE PARCOURUS PAR MOIS')
+    fig = px.pie(df_plot, values='DISTANCE', names='MONTH', title='REPARTITION DISTANCE PARCOURUS PAR MOIS USER '+id_user)
     st.plotly_chart(fig, theme=None, use_container_width=True)
 
 
@@ -97,7 +97,7 @@ def bar_dist_mois(id_user):
 
     # Pie Bar Plot
     buff = df_plot.groupby('MONTH').sum()['DISTANCE'].sort_values()
-    fig = px.bar(buff, x="DISTANCE", color="DISTANCE", title='DISTANCE TOTAL PAR MOIS (USER 000)')
+    fig = px.bar(buff, x="DISTANCE", color="DISTANCE", title='DISTANCE TOTAL PAR MOIS USER '+id_user)
     st.plotly_chart(fig, theme=None, use_container_width=True)
 
 
@@ -323,7 +323,12 @@ def bar_mois_transport(id_user):
     for i in range(len(df_plot.TRAJET_ID)):
         test = df_plot.TYPE_TRANSPORT_SS_TRAJET[i].split(',')
         if len(test) > 1 and test[0] != test[1]:
-            transport_final.append(test[0] + "," + test[1])
+            first_combi = test[0] + "," + test[1]
+            second_combi = test[1] + "," + test[0]
+            if second_combi not in transport_final:
+                transport_final.append(first_combi)
+            else :
+                transport_final.append(second_combi)
         else:
             transport_final.append(test[0])
 
@@ -598,40 +603,110 @@ def plot_rep_depart_arrive(id_user):
     df2 = df_test001
     df2 = df_test001.groupby(['Ville_depart-arrive'])['Ville_depart-arrive'].count().reset_index(name='count', )
     # print(df2)
-    fig = px.bar(df_test001, x="Ville_depart-arrive", title='Trajet user '+id_user, color='Transport Moyen')
+    fig = px.bar(df_test001, x="Ville_depart-arrive", title='TRAJET USER '+id_user, color='Transport Moyen')
     # fig.show()
     st.plotly_chart(fig, theme=None, use_container_width=True)
 
 def main():
     users = myclient["DonneeGPS"]["DATAGPS"].distinct("USER_ID")
-    attribute = st.selectbox("Choisir l'user", users)
     trajet = "trajet"
     distance = "distance"
 
-    # ---------------------------#
-    # PARTIE STATS GENERALES #
-    # ---------------------------#
-    chart_dist_mois(attribute)
-    bar_dist_mois(attribute)
+    st.markdown("""
+    <div class="card border shadow">
+        <div class="card-body text-dark">
+        Cette section regroupe les différentes visualisations graphiques réalisé.
+        <br/>
+        Les schémas ont été effectué grâce à une analyse du Dataset présent dans notre base de données MongoDB.
+        </div>
+    </div>
+    <br/>
+    """, unsafe_allow_html=True)
 
-    # ---------------------------#
-    # PARTIE TYPE-TRANSPORT #
-    # ---------------------------#
-    chart_transport(attribute, trajet)
-    chart_transport(attribute, distance)
-    bar_transport(attribute, trajet)
-    bar_transport(attribute, distance)
-    bar_mois_transport(attribute)
+    st.markdown("""
+    <div class="card border shadow">
+        <div class="card-body text-dark">
+        Afin d'étendre l'analyse nous avons expérimenté plusieurs domaines d'études.
+        <br/>
+        <li>Les différentes parties sont :
+            <ul>
+              <li>Partie Statistique Générale</li>
+              <li>Partie Statistique Type-Transport</li>
+              <li>Partie Statistique Écologie</li>
+            </ul>
+        </li>
+        </div>
+    </div>
+    <br/>
+    """, unsafe_allow_html=True)
 
-    # ---------------------------#
-    # PROFIL USER #
-    # ---------------------------#
-    profil_user(attribute)
-    chart_nb_ecologie(attribute, trajet)
-    chart_nb_ecologie(attribute, distance)
-    bar_ecologie(attribute, trajet)
-    bar_ecologie(attribute, distance)
-    plot_rep_depart_arrive(attribute)
+    st.markdown("""
+    <div class="card border shadow">
+        <div class="card-body text-dark">
+        ⚠️ Veuillez sélectionner un utilisateur avant de choisir un modèle de statistique ⚠️
+        </div>
+    </div>
+    <br/>
+    <br/>
+    """, unsafe_allow_html=True)
+
+    attribute = st.selectbox("Choisir l'user", users)
+    # Définir le nombre de colonnes
+    col1, col2, col3 = st.columns(3)
+
+    if col1.button('Statistique Générale'):
+        st.markdown("""
+        <div class="card border shadow style="text-align:center;">
+            <div class="card-body text-dark">
+                <center> #--------------------------- PARTIE STATS GENERALES ---------------------------# </center>
+            </div>
+        </div>
+        <br/>
+        """, unsafe_allow_html=True)
+
+        chart_dist_mois(attribute)
+        bar_dist_mois(attribute)
+        plot_rep_depart_arrive(attribute)
+        profil_user(attribute)
+
+    if col2.button('Statistique Type-Transport'):
+        st.markdown("""
+        <div class="card border shadow style="text-align:center;">
+            <div class="card-body text-dark">
+                <center> #--------------------------- PARTIE TYPE-TRANSPORT ---------------------------# </center>
+            </div>
+        </div>
+        <br/>
+        """, unsafe_allow_html=True)
+
+        col2_1, col2_2 = st.columns(2)
+        with col2_1:
+            chart_transport(attribute, trajet)
+        with col2_2:
+            chart_transport(attribute, distance)
+
+        bar_transport(attribute, trajet)
+        bar_transport(attribute, distance)
+        bar_mois_transport(attribute)
+
+    if col3.button('Statistique Écologie'):
+        st.markdown("""
+                <div class="card border shadow style="text-align:center;">
+                    <div class="card-body text-dark">
+                        <center> #--------------------------- PARTIE ÉCOLOGIE ---------------------------# </center>
+                    </div>
+                </div>
+                <br/>
+        """, unsafe_allow_html=True)
+
+        col3_1, col3_2 = st.columns(2)
+        with col3_1:
+            chart_nb_ecologie(attribute, trajet)
+        with col3_2:
+            chart_nb_ecologie(attribute, distance)
+
+        bar_ecologie(attribute, trajet)
+        bar_ecologie(attribute, distance)
 
 if __name__ == "__main__":
     main()
