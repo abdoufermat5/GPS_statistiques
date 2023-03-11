@@ -104,26 +104,55 @@ def map_trajet(id_user,num_trajet):
     st_folium(map_itineraire_bd, width=725)
 
 def main():
+    st.markdown("""
 
-    st.text('Cette section permet de visualiser un trajet présent dans notre base de données.\n'
-                'Afin d\'effectuer cela vous devez sélectionné : un utilisateur et un trajet')
+    <div class="card border shadow">
+        <div class="card-body text-dark">
+            Cette section permet de visualiser un trajet présent dans notre base de données.
+        </div>
+    </div>
+    <br/>
+    """, unsafe_allow_html=True)
 
-    st.text("Légende :\n")
-    st.markdown("* Le point :green[Vert] correspond au point de départ de l'utilisateur.")
-    st.markdown("* Le point Gris correspond au point de d'arrivée de l'utilisateur.")
-    st.markdown("* Un tracé :blue[Bleu] indique un trajet effectué à pied.")
-    st.markdown("* Un tracé :red[Rouge] indique un trajet effectué à vélo.")
-    st.markdown("* Un tracé Noir indique un trajet effectué en voiture, en bus ou alors en taxi.")
+    st.markdown("""
+        <div class="card border shadow">
+            <div class="card-body text-dark">
+            ⚠️ Veuillez sélectionner un utilisateur avant de choisir un trajet ⚠️
+            </div>
+        </div>
+        <br/>
+        <br/>
+        """, unsafe_allow_html=True)
 
     users = myclient["DonneeGPS"]["DATATEST"].distinct("USER_ID")
-
-#    if st.checkbox("Choisisser votre user"):
     attribute = st.selectbox("Choisir l'user", users)
 
     num_trajet = myclient["DonneeGPS"]["DATATEST"].find({'USER_ID': attribute}).distinct("TRAJET_ID")
     print (myclient["DonneeGPS"]["DATATEST"].find({'USER_ID': attribute}).distinct("TRAJET_ID"))
     attribute_trajet = st.selectbox("Choisir le trajet", num_trajet)
-    map_trajet(attribute,attribute_trajet)
+
+    col1, col2 = st.columns(2)
+    with col1:
+        map_trajet(attribute,attribute_trajet)
+    with col2:
+        st.markdown("""
+        <div class="card border shadow">
+            <div class="card-body text-dark">
+            Afin d'étendre l'analyse nous avons expérimenté plusieurs domaines d'études.
+            <br/>
+            <li>Légende :
+                <ul>
+                  <li>Le point <span style="color:green;">Vert</span> correspond au point de départ de l'utilisateur</li>
+                  <li>Le point <span style="color:gray;">Gris</span> correspond au point de d'arrivée de l'utilisateur</li>
+                  <li>Un tracé <span style="color:blue;">Bleu</span> indique un trajet effectué à pied</li>
+                  <li>Un tracé <span style="color:red;">Rouge</span> indique un trajet effectué à vélo</li>
+                  <li>Un tracé <strong>Noir</strong> indique un trajet effectué en voiture, en bus ou alors en taxi</li>
+                </ul>
+            </li>
+            </div>
+        </div>
+        <br/>
+        """, unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
