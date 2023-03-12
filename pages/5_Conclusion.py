@@ -36,8 +36,11 @@ st.markdown("""
 <div class="card-body text-dark"> En conclusion, notre travail avait pour objectifs de prétraiter le jeu de données Geolife, 
 de déterminer les modes de transport utilisés par les utilisateurs, de stocker les données de manière organisée dans 
 une base de données MongoDB, d'identifier les trajets domicile-travail et de créer des profils de personnes en 
-fonction de leurs habitudes de déplacement. Ces objectifs ont été atteints en utilisant des méthodes heuristiques 
+fonction de leurs habitudes de déplacement.<br /> 
+Ces objectifs ont été atteints en utilisant des méthodes heuristiques 
 (règle basé sur la vitesse et le temps pour determiner les trajets, inference type transport, clustering) qui 
-nous ont permis d'extraire des informations pertinentes à partir des données GPS collectées. 
+nous ont permis d'extraire des informations pertinentes à partir des données GPS collectées. <br /> 
+Enfin,nous pourrions améliorer notre analyse notamment la determination du type de transport en utilisant du machine learning sur des données
+déjà labélisées.
 </div>
 </div>""", unsafe_allow_html=True)

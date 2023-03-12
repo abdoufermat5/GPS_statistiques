@@ -34,6 +34,7 @@ def members():
         st.markdown("""
         <div class="col-11">
                 <div class="card bg-transparent border-0" style="background-color:e5e5e5">
+                <a href="https://www.linkedin.com/in/johann-ramanandraitsiory/">
                     <img src="https://cdn-icons-png.flaticon.com/512/147/147144.png" alt="Avatar de A" class="card-img-top rounded-circle">
                     <div class="card-body">
                         <h3 class="card-title text-center">Johann<br/> Ramanandraitsiory</h3>
@@ -48,6 +49,7 @@ def members():
         st.markdown("""
         <div class="col-11">
                 <div class="card bg-transparent border-0" style="background-color:e5e5e5">
+                <a href="https://www.linkedin.com/in/samuel-kalfon-617820212/">
                     <img src="https://cdn-icons-png.flaticon.com/512/147/147144.png" alt="Avatar de A" class="card-img-top rounded-circle">
                     <div class="card-body">
                         <h3 class="card-title text-center">Samuel<br/> Kalfon</h3>
@@ -62,6 +64,7 @@ def members():
         st.markdown("""
         <div class="col-11">
                 <div class="card bg-transparent border-0" style="background-color:e5e5e5">
+                <a href="https://www.linkedin.com/in/abdou-yaya-sadiakhou-40a94b1a3/">
                     <img src="https://cdn-icons-png.flaticon.com/512/147/147144.png" alt="Avatar de A" class="card-img-top rounded-circle">
                     <div class="card-body">
                     <h3 class="card-title text-center">Abdou Yaya <br/> Sadiakhou</h3>
@@ -76,6 +79,7 @@ def members():
         st.markdown("""
         <div class="col-11">
                 <div class="card bg-transparent border-0" style="background-color:e5e5e5">
+                <a href="https://www.linkedin.com/in/gwennael-cannenpasse/">
                     <img src="https://cdn-icons-png.flaticon.com/512/147/147144.png" alt="Avatar de A" class="card-img-top rounded-circle">
                     <div class="card-body">
                         <h3 class="card-title text-center">Gwennael<br/> Cannenpasse</h3>

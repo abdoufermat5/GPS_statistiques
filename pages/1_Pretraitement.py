@@ -261,6 +261,10 @@ def main():
     # Select the CSV file to load
     st.write(
         "Nous avons fais le choix de pré-traiter nos données afin de les préparer a l'analyse finale. L'objectif ici est double, d'une part avoir les trajets de chaque utilisateurs pour pouvoir déterminer les trajets domicile travail et d'autre part d'avoir pour chaque trajet l'ensemble des sous trajets séparé par une différence de vitesse pour déterminer les type de transports utilisés.")
+
+    st.header("Nettoyage des données")
+    st.write("Dans un premier temps, nous avons supprimé tous les relevés contenant des valeurs nulles. Puis dans un second temps, nous avons supprimé les valeurs aberrantes; latitude pas comprise entre [-90,90] et longitude pas comprise entre [-180,180]. "
+             "Enfin, nous avons supprimé les 6 premières lignes de chaque fichier (car ce ne sont pas des relevés) ainsi que l'altitude (pas utilisable pour nos calculs), le nombre de jour passé depuis 1899 et le field3 (all set at 0).")
     st.header("Traitement des fichiers .plt sur la regle du temps ⏱")
     st.write("Pour chaque utilisateur (181), nous avons stocké tous ses relevés dans un data frame puis nous avons déterminé des trajets au sein de ses relevés. Nous avons tout d'abord appliqué une règle de séparation suivant le temps, **soit deux relevés consécutif ayant une différence de temps supérieur a 10 minutes alors chacun de ces deux relevés est un trajet diffèrent**.")
     st.header("Traitement des fichiers .plt sur la regle de vitesse 💨")
