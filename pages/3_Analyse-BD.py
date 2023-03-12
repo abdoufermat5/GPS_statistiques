@@ -8,7 +8,7 @@ import geopy.distance
 import matplotlib.pyplot as plt
 import pymongo
 import plotly.express as px
-import seaborn as sns
+
 
 st.set_page_config(
     page_title="Analyse de la base de données MongoDB",
