@@ -26,28 +26,21 @@ mydb = myclient["DonneeGPS"]
 mycol = mydb["DATAGPS"]
 mycol2 = mydb["DATATEST"]
 def map_trajet(id_user,num_trajet):
-    if id_user == '000':
-        id_user = '001'
 
-    x = mycol.find({'USER_ID': id_user})
-    x_bis = mycol2.find({'USER_ID': id_user,'TRAJET_ID':num_trajet})
-    df_plot = pd.DataFrame.from_dict(x)
-    df_plot_bis = pd.DataFrame.from_dict(x_bis)
-
+    x = myclient["DonneeGPS"]["DATAGPS"].find_one({'USER_ID': id_user, 'TRAJET_ID':num_trajet})
+    x_bis = myclient["DonneeGPS"]["DATATEST"].find_one({'USER_ID': id_user,'TRAJET_ID':num_trajet})
     # initialize Nominatim API
     geolocator = Nominatim(user_agent="geoapiExercises")
     tab_locations_ss_trajet = []
     tab_transport = []
 
-    for i in range(len(df_plot_bis.SOUS_TRAJET)):
-        print(type(df_plot_bis.SOUS_TRAJET[i]))
-        tab_locations_ss_trajet.append(df_plot_bis.SOUS_TRAJET[i][0].get("List_Point"))
+    for i in x_bis['SOUS_TRAJET']:
+        print("index de la boucle : ", i)
+        tab_locations_ss_trajet.append(i["List_Point"])
 
-        # print("##################" + df_plot.SOUS_TRAJET[num_trajet][i].get('TYPE-TRANSPORT'))
-        tab_transport.append(df_plot.SOUS_TRAJET[i][0].get('TYPE-TRANSPORT'))
+    for y in x['SOUS_TRAJET']:
+        tab_transport.append(y['TYPE-TRANSPORT'])
 
-    print("#############################\n")
-    print((df_plot.SOUS_TRAJET[i][0].get('List_Point')))
     # Point de départ
     point_depart = tab_locations_ss_trajet[0][0]
 
