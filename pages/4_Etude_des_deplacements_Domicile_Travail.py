@@ -86,7 +86,11 @@ def funct(users):
 
     fig = px.density_mapbox(data, lat='latitude', lon='longitude', z='count',
                             mapbox_style="stamen-terrain")
-
+    
+    st.header("Density Map (coordonées)")
+    st.write("""Ci-dessous se trouve la "Heatmap" des différents points de départs et arrivées de l'utilisateur sur toutes les trajectoires chargées.
+    Nous considérons chaque point comme une entité singulière avec ses coordonnées en latitude et longitude. De ce fait, des clusters de positions vont se former selon la valeur de zoom sur la map ce qui va faire ressortir différents niveau d'aggrégat d'emplacements""")
+    st.write("""Par exemple : pour un utilisateur donnée au zoom minimal, nous pouvons remarquer un seul cluster principal en Chine, puis en zoomant sur la Chine nous pouvons distinctement remarquer deux zones de démarcations sur 2 principales villes puis sur des quartiers, des rues, etc...""")
     st.plotly_chart(fig)
 
     coordinates = [val[:2] for val in data.values.tolist()]
@@ -160,12 +164,27 @@ def funct(users):
 
     center_colors = ["purple","yellow"]
     for i,center in enumerate(centers):
-        folium.CircleMarker(center, radius=40, color=center_colors[i],fill=True).add_to(m)
+        folium.CircleMarker(center, radius=30, color=center_colors[i],fill=True).add_to(m)
 
+    st.header("Calcul des positions domicile-travail")
+    st.write("""Vient ensuite la fonction permettant d'estimer la position du domicile et du travail de l'utilisateur. Nous sommes partis d'un postulat simple, le principe est que les deux principaux clusters de coordonnées d'un utilisateur (càd celui contenant le plus de points) étaient respectivement le domicile et le travail. 
+    En revanche ces clusters sont calculées selon des paramètres et fonction précis""")
+
+    st.subheader("Méthode de clustering")
+    st.write("""Afin de calculer les différents clusters d'un utilisateur mais sans se baser sur les nombre de clusters (qu'on ne connait pas au préalable), mais sur une valeur parametrée, le rayon du cluster, pour notre cas vaut 15m (ce que l'on considère comme étant le rayon d'un lieu à l'echelle du bâtiment)
+    pour exprimer la distance entre 2 points nous utilison la fonction de distance Haversine qui est tou simplement celle permettant de donner la distance entre deux points appartenant à une même sphère.
+    Donc la méthode de clustering va prendre en entrée tous les points des trajectoires d'un utilisateur, puis va selecitonner aléatoirement une coordonnée et va se poser une question, existe t-il un cluster dont le centroid est à moins de 15 mètres de moi. Si cette question est répondue par l'affirmative alors le point sera assigné au cluster dont le centroid est le plus proche, sinon ce point formera un nouveau cluster.
+    Le point est ensuite retiré de la liste des points disponibles à assigner.""")
+
+    st.subheader("Résultats et affichage")
+    st.write("""Nous obtenons donc plusieurs clusters de diamètre = 30m, contenant chacun 1 à n points. Nous allons ensuite les trier par nombre de points contenus en eux. une fois cette liste de clusters générées et triées
+    nous allons extraire les 2 premiers élèments de la liste ce qui correspondra donc respectivement au domicile et au travail.
+    Afin de visualiser ces valeurs et les comparer, nous plaçons donc sur une carte les différents points des trajectoires. Si le point n'appartient à aucun cluster, il sera noir, rouge s'il appartient au domicile et bleau pour le travail. 
+    Nous affichons aussi la zone du cluster (violet,jaune) indiquant la région du lieu trouvé (domicile,travail)""")
     m.save('map.html')
     with open ('map.html','r') as f:
         import streamlit.components.v1 as components
-        components.html(f.read(),width=725,height=900)
+        components.html(f.read(),width=725,height=500)
     #st_folium(m,width=725)
 
 def main():
@@ -174,7 +193,15 @@ def main():
     users = myclient["DonneeGPS"]["DATAGPS"].distinct("USER_ID")
 
     attribute = st.selectbox("Choisir l'user", users)
+
+    st.write("Nous venons de choisir l'id du user parmi ceux présents dans la base afin de charger toutes ses trajectoires ces données seront utilisées afin de calculer les 2 principaux clusters de la personne selon une fonction précise.")
     funct(attribute)
+
+    st.header("Aller plus loin")
+    st.write("""
+    Nous obtenons des regroupements de points que nous définissons comme domicile et travail. Pour être plus précis nous donnons la positiion exacte de ces lieux en prenant le centre de ces clusters.
+    Nous pouvons augmenter la confiance de la précision de la prédiction en corrélant ces points avec les horaires afin de bien séparer le domicile du travail.
+    Enfin nous pouvons à présent trouver les différents moyens de transport de l'utilisateur lorsqu'il pratique son trajet domicile-travail.""")
 
 if __name__ == "__main__":
     main()
