@@ -11,7 +11,7 @@ import plotly.express as px
 
 
 st.set_page_config(
-    page_title="Analyse de la base de données MongoDB",
+    page_title="Analyse des déplacements",
     page_icon="🧊",
     layout="wide",
     initial_sidebar_state="expanded",
@@ -19,8 +19,8 @@ st.set_page_config(
 
 # Main objective page
 load_assets()
-load_sidebar_footer("Analyse BD", "storage")
-st.markdown("""<h2 class="text-center" style="background-color:#cad2e0">Analyse de la base de données MongoDB</h2>""", unsafe_allow_html=True)
+load_sidebar_footer("Analyse des déplacements", "storage")
+st.markdown("""<h2 class="text-center" style="background-color:#cad2e0">Analyse des déplacements</h2>""", unsafe_allow_html=True)
 
 # MongoDB
 uri = 'mongodb+srv://admin:uvsqawsgroupe17@cluster0.nkdni.mongodb.net/?retryWrites=true&w=majority'
