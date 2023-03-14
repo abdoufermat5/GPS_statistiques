@@ -182,10 +182,29 @@ def funct(users):
     Afin de visualiser ces valeurs et les comparer, nous plaçons donc sur une carte les différents points des trajectoires. Si le point n'appartient à aucun cluster, il sera noir, rouge s'il appartient au domicile et bleau pour le travail. 
     Nous affichons aussi la zone du cluster (violet,jaune) indiquant la région du lieu trouvé (domicile,travail)""")
     m.save('map.html')
-    with open ('map.html','r') as f:
-        import streamlit.components.v1 as components
-        components.html(f.read(),width=725,height=500)
-    #st_folium(m,width=725)
+
+    col1, col2 = st.columns(2)
+    with col1:
+        with open('map.html', 'r') as f:
+            import streamlit.components.v1 as components
+            components.html(f.read(), width=725, height=500)
+    with col2:
+        st.markdown("""
+            <div class="card border shadow">
+                <div class="card-body text-dark">
+                <br/>
+                <li>Légende :
+                    <ul>
+                      <li>Le cercle <span style="color:yellow;">Jaune</span> correspond à la zone du domicile de l'utilisateur</li>
+                      <li>Le cercle <span style="color:purple;">Violet</span> correspond à la zone de travail de l'utilisateur</li>
+                      <li>Les points <span style="color:blue;">Bleu</span> appartiennent à la zone du domicile</li>
+                      <li>Les points <span style="color:red;">Rouge</span> appartiennent à la zone de travail</li>
+                    </ul>
+                </li>
+                </div>
+            </div>
+            <br/>
+            """, unsafe_allow_html=True)
 
 def main():
     uri = 'mongodb+srv://admin:uvsqawsgroupe17@cluster0.nkdni.mongodb.net/?retryWrites=true&w=majority'

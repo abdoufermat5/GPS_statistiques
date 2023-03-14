@@ -35,7 +35,6 @@ def map_trajet(id_user,num_trajet):
     tab_transport = []
 
     for i in x_bis['SOUS_TRAJET']:
-        print("index de la boucle : ", i)
         tab_locations_ss_trajet.append(i["List_Point"])
 
     for y in x['SOUS_TRAJET']:
@@ -121,7 +120,6 @@ def main():
     attribute = st.selectbox("Choisir l'user", users)
 
     num_trajet = myclient["DonneeGPS"]["DATATEST"].find({'USER_ID': attribute}).distinct("TRAJET_ID")
-    print (myclient["DonneeGPS"]["DATATEST"].find({'USER_ID': attribute}).distinct("TRAJET_ID"))
     attribute_trajet = st.selectbox("Choisir le trajet", num_trajet)
 
     col1, col2 = st.columns(2)

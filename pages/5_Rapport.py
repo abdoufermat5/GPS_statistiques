@@ -102,9 +102,31 @@ def difficultes():
         Cette information peut amener une notion de déplacement ”Verte”, si nous détectons des trajets réalisés à
         pied ou a vélo plut qu’en engin motorisé. Au vue de l'inégalité de répartition des fichiers "label.txt",
         nous avons du trouver une méthode générale afin d'ajouter un label de type transport pour tous les trajets.
+        <br/><br/>
+        En revanche, après avoir consulté et traité les données, nous sommes arrivés à la conclusion 
+        qu'utiliser ces données n'allait pas avoir de grandes utilités pour notre projet. 
+        En effet, les différents trajets dans les trajectoires n'ont pas de références (Id). 
+        La seule manière d'attribuer un mode de transport à partir des données existantes serait 
+        depuis la date de fin et d'arrivée. Cependant, après notre traitement, nous avons séparé 
+        les différentes trajectoires en plusieurs trajets selon une séparation de temps fixe. 
+        Comme dans la figure ci-dessous, on remarque d'une part que certains trajets ont des temps 
+        aberrants (24h pour certains) mais on peut aussi noter le fait que nous avons les labels 
+        pour 14 700 trajets alors que notre base en contient plus de 400 000.
     </div>
     </div>""", unsafe_allow_html=True)
 
+    above_path2 = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
+    path_dir2 = os.path.join(above_path2, "html", 'assets', 'df_labels.png')
+
+    col1, col2, col3 = st.columns(3)
+    image2 = Image.open(path_dir2)
+    with col1:
+        pass
+    with col2:
+        st.markdown("""<br/>""", unsafe_allow_html=True)
+        st.image(image2, caption='Extrait du fichier .plt déjà labélisé', use_column_width=True)
+    with col3:
+        pass
 
     # DETECTION DES TYPE-TRANSPORT SOUS-TRAJETS #
     st.markdown("""
@@ -169,25 +191,10 @@ def solutions():
     <div class="card border shadow">
         <div class="card-body text-dark">
             <h4 style="text-decoration: underline;">B) Identification du label "transport"</h4>
-            En revanche, après avoir consulté et traité les données, nous sommes arrivés à la conclusion qu'utiliser ces données n'allait pas avoir de grandes utilités pour notre projet. 
-            En effet, les différents trajets dans les trajectoires n'ont pas de références (Id). La seule manière d'attribuer un mode de transport à partir des données existantes serait 
-            depuis la date de fin et d'arrivée. Cependant, après notre traitement, nous avons séparé les différentes trajectoires en plusieurs trajets selon une séparation de temps fixe. 
-            Comme dans la figure ci-dessous, on remarque d'une part que certains trajets ont des temps aberrants (24h pour certains) mais on peut aussi noter le fait que nous avons les labels 
-            pour 14 700 trajets alors que notre base en contient plus de 400 000.
+            Pour résoudre ce problème, nous n'avons donc pas utilisé les données labéllisé.
+            Pour ce faire, nous avons appliquer les règles décrite dans la partie <strong>Prétraitement</strong>.
         </div>
     </div>""", unsafe_allow_html=True)
-    above_path2 = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
-    path_dir2 = os.path.join(above_path2, "html", 'assets', 'df_labels.png')
-
-    col1, col2, col3 = st.columns(3)
-    image2 = Image.open(path_dir2)
-    with col1:
-        pass
-    with col2:
-        st.markdown("""<br/>""", unsafe_allow_html=True)
-        st.image(image2, caption='Extrait de la base de données', use_column_width=True)
-    with col3:
-        pass
 
     # IDENTIFICATION SOUS-TRAJETS #
     st.markdown("""
@@ -206,9 +213,20 @@ def solutions():
             Ces listes de points nous permettrons donc de calculer à nouveau la distance et la vitesse pour
             chaque sous-trajet. En d'autre termes, l'étiquette de type-transport pourra être ajouté et donc 
             nous pourrons préciser s'ils existent, les différents outils de transport employé pour un même trajet.
-            METTRE IMAGE BD AVEC LIST POINTS ET SOUS TRAJETS
         </div>
     </div>""", unsafe_allow_html=True)
+
+    col1, col2, col3 = st.columns(3)
+    above_pathMongo2 = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
+    path_dirMongo2 = os.path.join(above_pathMongo2, "html", 'assets', 'Mongo2.png')
+    imageMongo2 = Image.open(path_dirMongo2)
+    with col1:
+        pass
+    with col2:
+        st.markdown("""<br/>""", unsafe_allow_html=True)
+        st.image(imageMongo2, caption='Extrait de la base de données', use_column_width=True)
+    with col3:
+        pass
 
 def implementation():
     # IMPLÉMENTATION (outil logiciels) #
@@ -243,14 +261,27 @@ def implementation():
             <h4 style="text-decoration: underline;">A) MongoDB</h4>
             Étant donné que nous avons un nombre important de données à analyser, nous avons fait
             le choix de nous orienter vers l'utilisation d'une base de données NoSQL. Cette décision
-            se justifie par le fait que JUSTIFIER LE CHOIX DE MONGODB.
+            se justifie par le fait que la structure de nos données utilise des imbrications. 
+            Les données GPS peuvent être très volumineuses et nécessitent donc un stockage et 
+            une récupération rapides. MongoDB est conçu pour une performance élevée et 
+            peut facilement gérer de gros volumes de données.
             <br/>
             De plus, le stockage des données dans une base de données est primordiale si nous voulons
             par la suite, développer des analyses statistiques. La manipulation de requête SQL nous a 
             été utile dans la réalisation de cette mission.
-            <br/>METTRE IMAGE BD ?
         </div>
         </div>""", unsafe_allow_html=True)
+    col1, col2, col3 = st.columns(3)
+    above_pathMongo = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
+    path_dirMongo = os.path.join(above_pathMongo, "html", 'assets', 'Mongo.png')
+    imageMongo = Image.open(path_dirMongo)
+    with col1:
+        pass
+    with col2:
+        st.markdown("""<br/>""", unsafe_allow_html=True)
+        st.image(imageMongo, caption='Extrait de la base de données', use_column_width=True)
+    with col3:
+        pass
 
     # PyMongo #
     st.markdown("""
@@ -277,7 +308,7 @@ def implementation():
         <div class="card-body text-dark"> 
             <h4 style="text-decoration: underline;">C) Pandas</h4>
             Une fois que les informations de notre base de données ont été extrait,
-            nous avons manipuler la bibliothèque open-source Pandas car elle 
+            nous avons manipulé la bibliothèque open-source Pandas car elle 
             fournit des outils de manipulation et d'analyse de données.
             <br/>
             <li>Cette outils à été exploitable pour les fonctionnalités suivantes :
@@ -285,7 +316,7 @@ def implementation():
                   <li>
                     La création et la manipulation de DataFrames : une structure de données tabulaire 
                     qui peut contenir des données de différents types et tailles. Toutes les informations
-                    sur les trajets d'un utilisateur est conservé dans un DataFrame.
+                    sur les trajets d'un utilisateur sont conservé dans un DataFrame.
                   </li>
                   <li>
                     Le nettoyage et la préparation de données : Pandas offre une variété d'outils pour nettoyer 
