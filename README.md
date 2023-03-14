@@ -24,3 +24,7 @@ To run the app
 > 
 > go to the url displayed in the terminal
 > [http://localhost:8501](http://localhost:8501)
+
+# DEMO
+
+[https://abdoufermat5-gps-statistiques-accueil-eoxkcm.streamlit.app/](https://abdoufermat5-gps-statistiques-accueil-eoxkcm.streamlit.app/)
