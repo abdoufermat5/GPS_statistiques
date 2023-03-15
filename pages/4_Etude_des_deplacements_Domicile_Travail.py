@@ -187,7 +187,7 @@ def funct(users):
     with col1:
         with open('map.html', 'r') as f:
             import streamlit.components.v1 as components
-            components.html(f.read(), width=725, height=500)
+            components.html(f.read(), width=500, height=500)
     with col2:
         st.markdown("""
             <div class="card border shadow">
