@@ -72,6 +72,81 @@ def presentation():
             <br/>
     """, unsafe_allow_html=True)
 
+    col1, col2 = st.columns(2)
+    with col1:
+        code = '''
+        Geolife trajectory
+        WGS 84
+        Altitude is in Feet
+        Reserved 3
+        0,2,255,My Track,0,0,2,8421376
+        0
+        39.984094,116.319236,0,492,39744.2451967593,2008-10-23,05:53:05
+        39.984198,116.319322,0,492,39744.2452083333,2008-10-23,05:53:06
+        39.984224,116.319402,0,492,39744.2452662037,2008-10-23,05:53:11
+        39.984211,116.319389,0,492,39744.2453240741,2008-10-23,05:53:16
+        39.984217,116.319422,0,491,39744.2453819444,2008-10-23,05:53:21
+        39.98471,116.319865,0,320,39744.2454050926,2008-10-23,05:53:23
+        39.984674,116.31981,0,325,39744.245462963,2008-10-23,05:53:28
+            '''
+        st.markdown("""<br/>""", unsafe_allow_html=True)
+        st.code(code, language='markdown')
+    with col2:
+        st.markdown("""<br/>""", unsafe_allow_html=True)
+        st.markdown("""
+            <div class="card border shadow">
+                <div class="card-body text-dark">
+                Voilà un exemple de ce qui est contenue dans un fichier .plt.
+                <br/>
+                <li>Les éléments important sont :
+                    <ul>
+                      <li>Le champ 1 qui correspond à une Latitude en décimal</li>
+                      <li>Le champ 2 qui correspond à une Longitude en décimal</li>
+                      <li>Le champ 4 qui correspond à une Altitude en "feet""</li>
+                      <li>Le champ 5 qui correspond au nombre de jours passé depuis 30/12/1899</li>
+                      <li>Le champ 6 qui correspond à la date où le point a été relevé</li>
+                      <li>Le champ 7 qui correspond au temps où le point a été relevé</li>
+                    </ul>
+                </li>
+                </div>
+            </div>
+            <br/>
+            """, unsafe_allow_html=True)
+
+    col1, col2 = st.columns(2)
+    with col1:
+        code = '''
+        Geolife trajectory Labels
+        Start Time	End Time	Transportation Mode
+        2007/10/10 15:23:32	2007/10/10 15:32:59	bike
+        2007/10/11 01:15:20	2007/10/11 01:22:10	bike
+        2007/10/12 00:55:37	2007/10/12 01:01:07	bike
+        2007/10/13 07:49:15	2007/10/13 07:55:53	taxi
+        2007/10/13 07:56:58	2007/10/13 07:59:15	walk
+                '''
+        st.markdown("""<br/>""", unsafe_allow_html=True)
+        st.code(code, language='markdown')
+    with col2:
+        st.markdown("""<br/>""", unsafe_allow_html=True)
+        st.markdown("""
+                <div class="card border shadow">
+                    <div class="card-body text-dark">
+                    Voilà un exemple de ce qui est contenue dans un fichier labels.txt.
+                    <br/>
+                    <li>Les éléments important sont :
+                        <ul>
+                          <li>Le champ 1 qui correspond à la date du début du trajet</li>
+                          <li>Le champ 2 qui correspond à l'heure de départ du trajet</li>
+                          <li>Le champ 3 qui correspond à la date de fin du trajet</li>
+                          <li>Le champ 4 qui correspond à l'heure de fin du trajet</li>
+                          <li>Le champ 5 qui correspond au modes de transport employé</li>
+                        </ul>
+                    </li>
+                    </div>
+                </div>
+                <br/>
+                """, unsafe_allow_html=True)
+
 def difficultes():
 # DIFFICULTÉS TECHNIQUES #
     # DETECTION DES TRAJETS #
